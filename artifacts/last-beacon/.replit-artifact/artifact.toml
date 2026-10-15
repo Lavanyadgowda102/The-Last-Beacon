@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "The Last Beacon"
+description = "An offline-first survival coordination simulator for a fictional hackathon scenario, with a clickable city map, threat-aware route planning, supply tracking, survivor readiness, and local persistence."
+version = "1.0.0"
+id = "artifacts/last-beacon"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24573
+
+[services.development]
+run = "pnpm --filter @workspace/last-beacon run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/last-beacon", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/last-beacon/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24573"
+BASE_PATH = "/"
